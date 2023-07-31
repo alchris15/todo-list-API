@@ -7,8 +7,14 @@ const UpdateService = require('../services/Update')
 const DeleteService = require('../services/Delete')
 const Connection = require('../database/Connection')
 const RetrieveService2 = require('../services/Getalltodos')
-const SearchById = require('../services/SearchById')
+const SearchById = require('../services/GetById')
 const setCompleted = require('../services/SetCompleted')
+const FindByTitle = require('../services/FindByTitle')
+const setDeleted = require('../services/setDeleted')
+const { idText } = require('typescript')
+const GetById = require('../services/GetById')
+
+
 
 router.post(`/create`, async(req, res) => {
     const {id, todolist} = req.body
@@ -30,27 +36,7 @@ console.log(req.body)
                 message: "Not Created!"
             })
     }
-})
 
-router.get(`/getbyId`, async(req, res) => {
-    const { fields } = req.query
-
-    const results = await RetrieveService(fields)
-
-    if (results) {
-        res 
-        .status(200)
-        .send (results)
-            
-
-    } else {
-        res
-            .status(500)
-            .send ({
-                status: results,
-                message: "Not Retrieved!"
-            })
-    }
 })
 
 router.put(`/update`, async(req, res) => {
@@ -75,10 +61,10 @@ router.put(`/update`, async(req, res) => {
     }
 })
 
-router.get(`/SearchById`, async(req, res) => {
+router.get(`/GetById`, async(req, res) => {
     const { id } = req.query
 
-    const results = await SearchById(id)
+    const results = await GetById(id)
 
     if (results) {
         res 
@@ -99,20 +85,20 @@ router.get(`/SearchById`, async(req, res) => {
 router.get(`/FindByTitle`, async(req, res) => {
     const { search } = req.query
 
-    const results = await RetrieveService(search)
+    const results = await FindByTitle(search)
 
     if (results) {
         res 
-        .status(200)
+        .status(201)
         .send (results)
             
 
     } else {
         res
-            .status(500)
+            .status(501)
             .send ({
                 status: results,
-                message: "Not Retrieved!"
+                message: "Not Searched!"
             })
     }
 })
@@ -142,33 +128,37 @@ router.get(`/GetAllTodos`, async(req, res) => {
 
 router.get(`/delete`, async(req, res) => {
     const {id} = req.query
-
-
-
     const results = await DeleteService(id)
 
     if (results) {
         res
-        .status(200)
+        .status(201)
         .send({
             status: results,
             message: "Successfully Updated!"
         })
     } else {
         res
-            .status(500)
+            .status(501)
             .send ({
                 status: results,
                 message: "Not Updated!"
             })
     }
 })
-module.exports = router
+/*
+When to use Query Param
+1. When PUT endpoint has fixed functionality or purpose. like Set True or False
+
+When to use Body
+1. If you want to update morethan 1 fields or not true or false.
+2. If new value is set from Consumer End.
+
+*/
 
 router.put(`/setCompleted`, async(req, res) => {
-    const {id,isCompleted} = req.body
-console.log(req.body)
-    const results = await setCompleted(id,isCompleted)
+    const {id} = req.query
+    const results = await setCompleted(id)
 
     if (results) {
         res
@@ -186,3 +176,28 @@ console.log(req.body)
             })
     }
 })
+
+
+router.put(`/setDeleted`, async(req, res) => {
+    const {id} = req.query
+console.log(req.query)
+    const results = await setDeleted(id)
+
+    if (results) {
+        res
+        .status(201)
+        .send({
+            status: results,
+            message: "Successfully Created!"
+        })
+    } else {
+        res
+            .status(501)
+            .send ({
+                status: results,
+                message: "Not Created!"
+            })
+    }
+})
+
+module.exports = router

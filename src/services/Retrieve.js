@@ -1,9 +1,9 @@
 const Connection = require('../database/Connection')
 /*
 4. Add Filters for Get endpoints
-	>getall = select * from todos
-	>getbyId = 'select * from todos where number=[insert id here]'
-	>searchByTitle = 'select * from todods where todolist like '%eat%'
+	>getall = select * from todos   ✓
+	>getbyId = 'select * from todos where number=[insert id here]' ✓
+	>searchByTitle = 'select * from todos where todolist like '%eat%' 
 	>getbyColumnName = already existing just rename
 
 */

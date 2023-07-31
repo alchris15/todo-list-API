@@ -6,10 +6,8 @@ const Connection = require('../database/Connection')
 */
 module.exports = async (search) => {
     try {
-    const query = `SELECT * FROM` +
-                        `todos` + 
-                        `WHERE ` +
-                        `search = ${search} ` 
+    const query = "SELECT * FROM todos where todolist like '"+search+"%'"
+    console.log(query)
 
 
  const results = await Connection(query)
