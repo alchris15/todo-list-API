@@ -4,12 +4,13 @@ https://www.w3schools.com/sql/sql_update.asp
 
 module.exports = async (id,isCompleted) => {
     try {
-    const query = `INSERT INTO ` + 
-                    `todos (id, isCompleted)` + 
-                    `VALUES ` +
-                    `('${id}', ('${isCompleted}'))`
-
-console.log(todolist)
+        const query = "Update todos set isCompleted = 1" + 
+        " where id = "+id
+    //update table set column=value where columnwheretofind=valueowhattofind
+    //5 51 500 50001
+    //5%
+        console.log(id)
+    
  await Connection(query)
 
 

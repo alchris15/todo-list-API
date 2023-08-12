@@ -9,6 +9,7 @@ const Connection = require('../database/Connection')
 const RetrieveService2 = require('../services/Getalltodos')
 const SearchById = require('../services/SearchById')
 const setCompleted = require('../services/SetCompleted')
+const FindByTitle = require('../services/SetCompleted')
 
 router.post(`/create`, async(req, res) => {
     const {id, todolist} = req.body
@@ -99,20 +100,20 @@ router.get(`/SearchById`, async(req, res) => {
 router.get(`/FindByTitle`, async(req, res) => {
     const { search } = req.query
 
-    const results = await RetrieveService(search)
+    const results = await FindByTitle(search)
 
     if (results) {
         res 
-        .status(200)
+        .status(201)
         .send (results)
             
 
     } else {
         res
-            .status(500)
+            .status(501)
             .send ({
                 status: results,
-                message: "Not Retrieved!"
+                message: "Not Searched!"
             })
     }
 })
@@ -124,12 +125,7 @@ router.get(`/GetAllTodos`, async(req, res) => {
     const results = await RetrieveService2(fields)
 
     if (results) {
-        res     
-        .status(201)
-        .send({
-            status: results,
-            message: "Successfully Getalltodos!"
-        })
+        res.json(results)
     } else {
         res
             .status(501)
@@ -171,12 +167,9 @@ console.log(req.body)
     const results = await setCompleted(id,isCompleted)
 
     if (results) {
-        res
-        .status(201)
-        .send({
-            status: results,
-            message: "Successfully Created!"
-        })
+        //return into Array
+        // to use status code for refactoring
+        res.json(results);
     } else {
         res
             .status(501)
@@ -185,4 +178,27 @@ console.log(req.body)
                 message: "Not Created!"
             })
     }
+    router.put(`/setDeleted`, async(req, res) => {
+        const {id} = req.query
+    console.log(req.query)
+        const results = await setDeleted(id)
+    
+        if (results) {
+            res
+            .status(201)
+            .send({
+                status: results,
+                message: "Successfully Created!"
+            })
+        } else {
+            res
+                .status(501)
+                .send ({
+                    status: results,
+                    message: "Not Created!"
+                })
+        }
+    })
+    
+    module.exports = router
 })
