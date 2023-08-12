@@ -9,7 +9,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })); // for encoded bodies
 app.use(cors());
 
-const port = 5001
+const port = 3001
 
 const todosRoutes = require('./routes/Todos')
 // const TodoRouters = require('./route')
