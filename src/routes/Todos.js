@@ -105,25 +105,20 @@ router.get(`/FindByTitle`, async(req, res) => {
 
 
 router.get(`/GetAllTodos`, async(req, res) => {
-     const {fields} = req.query
+    const {fields} = req.query
 
-    const results = await RetrieveService2(fields)
+   const results = await RetrieveService2(fields)
 
-    if (results) {
-        res     
-        .status(201)
-        .send({
-            status: results,
-            message: "Successfully Getalltodos!"
-        })
-    } else {
-        res
-            .status(501)
-            .send ({
-                status: results,
-                message: "Failed to Get!"
-            })
-    }
+   if (results) {
+       res.json(results)
+   } else {
+       res
+           .status(501)
+           .send ({
+               status: results,
+               message: "Failed to Get!"
+           })
+   }
 })
 
 router.get(`/delete`, async(req, res) => {
